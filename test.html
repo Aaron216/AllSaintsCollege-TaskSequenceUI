@@ -11,8 +11,8 @@
 <head>
     <title>OSD Front End Script</title>
     <HTA:APPLICATION APPLICATIONNAME="OSD GATHER" SCROLL="yes" SINGLEINSTANCE="yes" WINDOWSTATE="normal" BORDER="thin">
-        <style>
-            body {
+    <style>
+        body {
             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
             font: 12 pt;
             color: black;
@@ -31,14 +31,14 @@
             display: inline-block;
         }
 
-        .col-label {
+        .col-25 {
             float: left;
-            width: 30%;
+            width: 25%;
             margin-top: 6px;
         }
-        .col-select {
+        .col-75 {
             float: left;
-            width: 70%;
+            width: 75%;
             margin-top: 6px;
         }
         .row:after {
@@ -72,96 +72,14 @@
     </style>
 </head>
 
-<script language="vbscript" type="text/vbscript">
-
-' Set objects and declare global variables
-Set env = CreateObject("Microsoft.SMS.TSEnvironment")
-Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")
-
-Sub Window_onLoad
-'    window.resizeTo 600, 400 ' Resize the HTA window on first load
-    window.moveTo 160, 40 ' Move the window to the center
-End Sub
-
-Sub ButtonFinishClick
-    ' ButtonFinishClick is executed by the "Finish" button.
-
-    For Each objButton in OSD_Image_Type
-            If objButton.Checked Then
-                strOSD_Image_Type = objButton.Value
-            End If
-        Next
-
-    Select Case OSD_Format_Size.value
-        Case 0
-            strOSD_Format_Size = "0"
-        Case 80
-            strOSD_Format_Size = "80"
-        Case 100
-            strOSD_Format_Size = "100"
-        Case 120
-            strOSD_Format_Size = "120"
-        Case 140
-            strOSD_Format_Size = "140"
-        Case 160
-            strOSD_Format_Size = "160"
-    End Select
-    
-    For Each objButton in OSD_User_Type
-        If objButton.Checked Then
-            strOSD_User_Type = objButton.Value
-        End If
-    Next
-        
-    For Each objButton in OSD_User_School
-        If objButton.Checked Then
-            strOSD_User_School = objButton.Value
-        End If
-    Next
-
-    For Each objButton in OSD_Ninite_Install
-        If objButton.checked Then
-            strOSD_Ninite_Install = objButton.Value
-        End If
-    Next
-    
-    For Each objButton in OSD_Progress_Bar
-        If objButton.Checked Then
-            strOSD_Progress_Bar = objButton.Value
-        End If
-    Next	
-    
-    ' Set value of variables that will be used by the task sequence, then close the window and allow the task sequence to continue.
-    
-'   Comment to check variables.	
-    env("OSD_Image_Type") = strOSD_Image_Type
-    env("OSD_Format_Size") = strOSD_Format_Size
-    env("OSD_User_Type") = strOSD_User_Type
-    env("OSD_User_School") = strOSD_User_School
-    env("OSD_Ninite_Install") = strOSD_Ninite_Install
-    env("OSD_Progress_Bar") = strOSD_Progress_Bar
-
-'   Uncomment to check variables.
-'   MsgBox("OSD_Image_Type = " + strOSD_Image_Type)
-'   MsgBox("OSD_Format_Size = " + strOSD_Format_Size)
-'   MsgBox("OSD_User_Type = " + strOSD_User_Type)
-'   MsgBox("OSD_User_School = " + strOSD_User_School)
-'   MsgBox("OSD_Ninite_Install = " + strOSD_Ninite_Install)
-'   MsgBox("OSD_Progress_Bar = " + strOSD_Progress_Bar)
-
-    window.Close
-End Sub
-
-</script>
-
 <body>
     <h1>Re-Image Options Menu</h1>
 
     <div class="row">
-        <div class="col-label">
+        <div class="col-25">
             <label for="selImageType">Image Type</label>
         </div>
-        <div class="col-select">
+        <div class="col-75">
             <select id="selImageType">
                 <option value="refresh">Refresh</option>
                 <option value="full">Full</option>
@@ -170,10 +88,10 @@ End Sub
     </div>
 
     <div class="row">
-        <div class="col-label">
+        <div class="col-25">
             <label for="selSchool">School</label>
         </div>
-        <div class="col-select">
+        <div class="col-75">
             <select id="selSchool">
                 <option value="senior">Senior</option>
                 <option value="junior">Junior</option>
@@ -182,10 +100,10 @@ End Sub
     </div>
 
     <div class="row">
-        <div class="col-label">
+        <div class="col-25">
             <label for="selUser">User Type</label>
         </div>
-        <div class="col-select">
+        <div class="col-75">
             <select id="selUser">
                 <option value="student">Student</option>
                 <option value="staff">Staff</option>
@@ -194,10 +112,10 @@ End Sub
     </div>
 
     <div class="row">
-        <div class="col-label">
+        <div class="col-25">
             <label for="selNinite">Ninite</label>
         </div>
-        <div class="col-select">
+        <div class="col-75">
             <select id="selNinite">
                 <option value="core">Core</option>
                 <option value="full">Full</option>
@@ -206,10 +124,10 @@ End Sub
     </div>
 
     <div class="row">
-        <div class="col-label">
+        <div class="col-25">
             <label for="selProgressBar">Progress Bar</label>
         </div>
-        <div class="col-select">
+        <div class="col-75">
             <select id="selProgressBar">
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
@@ -224,5 +142,4 @@ End Sub
     </div>
 
 </body>
-
 </html>
