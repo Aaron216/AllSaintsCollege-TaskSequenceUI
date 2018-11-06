@@ -1,75 +1,62 @@
 <html>
-<!--
-        All Saints' College
-        Technology Suppport Centre
-            Aaron Musgrave
-            Blaze Reynolds
-            Brad Lucas
-        16/10/2018
-    -->
-
+	<!--
+		All Saints' College
+		Technology Suppport Centre
+			Aaron Musgrave
+			Blaze Reynolds
+			Brad Lucas
+		13/12/2017
+	-->
 <head>
-    <title>OSD Front End Script</title>
-    <HTA:APPLICATION APPLICATIONNAME="OSD GATHER" SCROLL="yes" SINGLEINSTANCE="yes" WINDOWSTATE="normal" BORDER="thin">
-        <style>
-            body {
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-            font: 12 pt;
-            color: black;
-            background-color: #FDFDFD
-        }
+<title>OSD Front End Script</title>
+<HTA:APPLICATION APPLICATIONNAME="OSD GATHER" SCROLL="yes" SINGLEINSTANCE="yes" WINDOWSTATE="normal" BORDER="thin">
+<style>
+	body {
+		font:12 pt Calibri;
+		color:black;
+		background-color:#F0F0F0
+	}
+	
+	h1 {
+		font:20 pt Calibri;
+		font-weight:bold;
+		color:black;
+	}
 
-        h1 {
-            font:20 pt;
-            font-weight:bold;
-            color: black;
-            text-align: center;
-        }
+	h2 {
+		font:16 pt Calibri;
+		font-weight: bold;
+		margin:0;
+		color:black;
+		background-color:#F0F0F0
+	}
+	
+	table, th, td {
+		font:12 pt Calibri;
+		vertical-align: middle;
+		padding:0px;
+		border-collapse: collapse;
+	}
+	
+	th {
+		font:16 pt Calibri;
+		font-weight:bold;
+		vertical-align: bottom;
+		text-align:left;
+	}
+	
+	select {
+		font:10 pt Calibri;
+		color:black;
+		background-color:white
+	}
 
-        label {
-            padding: 12px 12px 12px 0;
-            display: inline-block;
-        }
-
-        .col-label {
-            float: left;
-            width: 30%;
-            margin-top: 6px;
-        }
-        .col-select {
-            float: left;
-            width: 70%;
-            margin-top: 6px;
-        }
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-
-        select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #CCCCCC;
-            border-radius: 4px;
-            font:10 pt;
-            color: black;
-            background-color: #F1F1F1;
-        }
-
-        button {
-            background-color: #0B234E;
-            border: none;
-            color: white;
-            padding: 8px 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-        }
-
-        #buttonWrapper {
-            text-align: center
-        }
-    </style>
+	label {
+		font: 12 pt Calibri;
+		vertical-align: middle;
+		color:black;
+	}
+</style>
 </head>
 
 <script language="vbscript" type="text/vbscript">
@@ -79,150 +66,192 @@ Set env = CreateObject("Microsoft.SMS.TSEnvironment")
 Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")
 
 Sub Window_onLoad
-'    window.resizeTo 600, 400 ' Resize the HTA window on first load
-    window.moveTo 160, 40 ' Move the window to the center
+	window.resizeTo 480, 520 ' Resize the HTA window on first load
+	window.moveTo 160, 40 ' Move the window to the center
 End Sub
 
 Sub ButtonFinishClick
-    ' ButtonFinishClick is executed by the "Finish" button.
+	' ButtonFinishClick is executed by the "Finish" button.
 
-    For Each objButton in OSD_Image_Type
-            If objButton.Checked Then
-                strOSD_Image_Type = objButton.Value
-            End If
-        Next
+	For Each objButton in OSD_Image_Type
+			If objButton.Checked Then
+				strOSD_Image_Type = objButton.Value
+			End If
+		Next
 
-    Select Case OSD_Format_Size.value
-        Case 0
-            strOSD_Format_Size = "0"
-        Case 80
-            strOSD_Format_Size = "80"
-        Case 100
-            strOSD_Format_Size = "100"
-        Case 120
-            strOSD_Format_Size = "120"
-        Case 140
-            strOSD_Format_Size = "140"
-        Case 160
-            strOSD_Format_Size = "160"
-    End Select
-    
-    For Each objButton in OSD_User_Type
-        If objButton.Checked Then
-            strOSD_User_Type = objButton.Value
-        End If
-    Next
-        
-    For Each objButton in OSD_User_School
-        If objButton.Checked Then
-            strOSD_User_School = objButton.Value
-        End If
-    Next
+	Select Case OSD_Format_Size.value
+		Case 0
+			strOSD_Format_Size = "0"
+		Case 80
+			strOSD_Format_Size = "80"
+		Case 100
+			strOSD_Format_Size = "100"
+		Case 120
+			strOSD_Format_Size = "120"
+		Case 140
+			strOSD_Format_Size = "140"
+		Case 160
+			strOSD_Format_Size = "160"
+	End Select
+	
+	For Each objButton in OSD_User_Type
+		If objButton.Checked Then
+			strOSD_User_Type = objButton.Value
+		End If
+	Next
+		
+	For Each objButton in OSD_User_School
+		If objButton.Checked Then
+			strOSD_User_School = objButton.Value
+		End If
+	Next
 
-    For Each objButton in OSD_Ninite_Install
-        If objButton.checked Then
-            strOSD_Ninite_Install = objButton.Value
-        End If
-    Next
-    
-    For Each objButton in OSD_Progress_Bar
-        If objButton.Checked Then
-            strOSD_Progress_Bar = objButton.Value
-        End If
-    Next	
-    
-    ' Set value of variables that will be used by the task sequence, then close the window and allow the task sequence to continue.
-    
-'   Comment to check variables.	
-    env("OSD_Image_Type") = strOSD_Image_Type
-    env("OSD_Format_Size") = strOSD_Format_Size
-    env("OSD_User_Type") = strOSD_User_Type
-    env("OSD_User_School") = strOSD_User_School
-    env("OSD_Ninite_Install") = strOSD_Ninite_Install
-    env("OSD_Progress_Bar") = strOSD_Progress_Bar
+	For Each objButton in OSD_Ninite_Install
+		If objButton.checked Then
+			strOSD_Ninite_Install = objButton.Value
+		End If
+	Next
+	
+	For Each objButton in OSD_Progress_Bar
+		If objButton.Checked Then
+			strOSD_Progress_Bar = objButton.Value
+		End If
+	Next	
+	
+	' Set value of variables that will be used by the task sequence, then close the window and allow the task sequence to continue.
+	
+'	Comment to check variables.	
+	env("OSD_Image_Type") = strOSD_Image_Type
+	env("OSD_Format_Size") = strOSD_Format_Size
+	env("OSD_User_Type") = strOSD_User_Type
+	env("OSD_User_School") = strOSD_User_School
+	env("OSD_Ninite_Install") = strOSD_Ninite_Install
+	env("OSD_Progress_Bar") = strOSD_Progress_Bar
 
-'   Uncomment to check variables.
-'   MsgBox("OSD_Image_Type = " + strOSD_Image_Type)
-'   MsgBox("OSD_Format_Size = " + strOSD_Format_Size)
-'   MsgBox("OSD_User_Type = " + strOSD_User_Type)
-'   MsgBox("OSD_User_School = " + strOSD_User_School)
-'   MsgBox("OSD_Ninite_Install = " + strOSD_Ninite_Install)
-'   MsgBox("OSD_Progress_Bar = " + strOSD_Progress_Bar)
+'	Uncomment to check variables.
+'	MsgBox("OSD_Image_Type = " + strOSD_Image_Type)
+'	MsgBox("OSD_Format_Size = " + strOSD_Format_Size)
+'	MsgBox("OSD_User_Type = " + strOSD_User_Type)
+'	MsgBox("OSD_User_School = " + strOSD_User_School)
+'	MsgBox("OSD_Ninite_Install = " + strOSD_Ninite_Install)
+'	MsgBox("OSD_Progress_Bar = " + strOSD_Progress_Bar)
 
-    window.Close
+	window.Close
 End Sub
 
 </script>
 
 <body>
-    <h1>Re-Image Options Menu</h1>
+<span id = "List"></span>
+<h1>Re-Image Options Menu</h1>
 
-    <div class="row">
-        <div class="col-label">
-            <label for="selImageType">Image Type</label>
-        </div>
-        <div class="col-select">
-            <select id="selImageType">
-                <option value="refresh">Refresh</option>
-                <option value="full">Full</option>
-            </select>
-        </div>
-    </div>
+<!-- IMAGE TYPE -->
+<h2>Image Type</h2>
+<table>
+	<tr>
+		<td>
+			<input type="radio" name="OSD_Image_Type" value="Refresh" id="Type_Refresh" checked="checked" style="height:25px; width:25px">
+			<label for="Type_Refresh"> Refresh </label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="radio" name="OSD_Image_Type" value="Full" id="Type_Full" style="height:25px; width:25px">
+			<label for="Type_Full"> Full </label>
+		</td>
+		<td>(Warning: This will wipe all data on all drives!)</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			Select C:\ Drive Size: 
+			<select name="OSD_Format_Size">
+				<option value="0"> Select if Applicable </option>
+				<option value="80"> 80GB </option>
+				<option value="100"> 100GB </option>
+				<option value="120"> 120GB </option>
+				<option value="140"> 140GB </option>
+				<option value="160"> 160GB </option>
+			</select>
+		</td>
+	</tr>
+</table>
 
-    <div class="row">
-        <div class="col-label">
-            <label for="selSchool">School</label>
-        </div>
-        <div class="col-select">
-            <select id="selSchool">
-                <option value="senior">Senior</option>
-                <option value="junior">Junior</option>
-            </select>
-        </div>
-    </div>
+<br>
 
-    <div class="row">
-        <div class="col-label">
-            <label for="selUser">User Type</label>
-        </div>
-        <div class="col-select">
-            <select id="selUser">
-                <option value="student">Student</option>
-                <option value="staff">Staff</option>
-            </select>
-        </div>
-    </div>
+<!-- SCHOOL AND USER TYPE -->
+<table>
+	<tr>
+		<th width="200px"><b>School</b></th>
+		<th width="200px"><b>User Type</b></th>
+	</tr>
+	<tr>
+		<td>
+			<input type="radio" name="OSD_User_School" value="Junior" id="School_Junior" style="height:25px; width:25px">
+			<label for="School_Junior"> Junior </label>
+		</td>
+		<td>
+			<input type="radio" name="OSD_User_Type" value="Student" id="User_Student" style="height:25px; width:25px">
+			<label for="User_Student"> Student </label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="radio" name="OSD_User_School" value="Senior" id="School_Senior" style="height:25px; width:25px">
+			<label for="School_Senior"> Senior </label>
+		</td>
+		<td>
+			<input type="radio" name="OSD_User_Type" value="Staff" id="User_Staff" style="height:25px; width:25px">
+			<label for="User_Staff"> Staff </label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="radio" name="OSD_User_School" value="Both" id="School_Both" style="height:25px; width:25px">
+			<label for="School_Both"> Both </label>
+		</td>
+		<td>
+			<input type="radio" name="OSD_User_Type" value="Both" id="User_Both" style="height:25px; width:25px">
+			<label for="User_Both"> Both </label>
+		</td>
+	</tr>
+</table>
 
-    <div class="row">
-        <div class="col-label">
-            <label for="selNinite">Ninite</label>
-        </div>
-        <div class="col-select">
-            <select id="selNinite">
-                <option value="core">Core</option>
-                <option value="full">Full</option>
-            </select>
-        </div>
-    </div>
+<br>
 
-    <div class="row">
-        <div class="col-label">
-            <label for="selProgressBar">Progress Bar</label>
-        </div>
-        <div class="col-select">
-            <select id="selProgressBar">
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select>
-        </div>
-    </div>
+<!-- NINITE AND PROGRESS BAR -->
+<table>
+	<tr>
+		<th width="200px">Ninite Package</th>
+		<th width="200px">Progress Bar</th>
+	</tr>
+	<tr>
+		<td>
+			<input type="radio" name="OSD_Ninite_Install" value="Core" id="Ninite_Core" checked="checked" style="height:25px; width:25px">
+			<label for="Ninite_Core"> Core </label>
+		</td>
+		<td>
+			<input type="radio" name="OSD_Progress_Bar" value="Yes" id="Progress_Yes" checked="checked" style="height:25px; width:25px">
+			<label for="Progress_Yes"> On </label>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="radio" name="OSD_Ninite_Install" value="Full" id="Ninite_Full" style="height:25px; width:25px">
+			<label for="Ninite_Full"> Full </label>
+		</td>
+		<td>
+			<input type="radio" name="OSD_Progress_Bar" value="No" id="Progress_No" style="height:25px; width:25px">
+			<label for="Progress_No"> Off </label>
+		</td>
+	</tr>
+</table>
 
-    <div id="buttonWrapper">
-        <button accesskey=N type=submit id=buttonFinish onclick=ButtonFinishClick>
-            Install
-        </button>
-    </div>
+<br>
+
+<button accesskey=N type=submit id=buttonFinish onclick=ButtonFinishClick >
+	<font size="4.5">Install</font>
+</button>
 
 </body>
-
 </html>
