@@ -9,7 +9,7 @@
     -->
 <head>
 <title>OSD Front End Script</title>
-<HTA:APPLICATION APPLICATIONNAME="OSD GATHER" SCROLL="yes" SINGLEINSTANCE="yes" WINDOWSTATE="normal" BORDER="thin">
+<HTA:APPLICATION APPLICATIONNAME="OSD GATHER" SCROLL="no" SINGLEINSTANCE="yes" WINDOWSTATE="normal" BORDER="thin">
 <style>
     body {
         font:12 pt Calibri;
@@ -79,12 +79,12 @@ Sub Window_onLoad
 
     If InStr(strProductName, STR_TOSHIBA_X30) = 0 Then
         ' Not Found: Not X30
-        window.resizeTo 480, 520 ' Resize the HTA window on first load
-        window.moveTo 160, 40 ' Move the window to the center
+        window.resizeTo 460, 540 ' Resize the HTA window on first load
+        window.moveTo 170, 30 ' Move the window to the center
     Else
         ' Found: Is X30
-        window.resizeTo 680, 720 ' Resize the HTA window on first load
-        window.moveTo 620, 180 ' Move the window to the center
+        window.resizeTo 720, 720 ' Resize the HTA window on first load
+        window.moveTo 580, 180 ' Move the window to the center
     End If
 
 End Sub
