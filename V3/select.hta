@@ -1,0 +1,243 @@
+<html>
+    <!--
+        All Saints' College
+        Technology Suppport Centre
+            Aaron Musgrave
+            Blaze Reynolds
+            Brad Lucas
+        7/11/2018
+    -->
+<head>
+<title>OSD Front End Script</title>
+<HTA:APPLICATION APPLICATIONNAME="OSD GATHER" SCROLL="yes" SINGLEINSTANCE="yes" WINDOWSTATE="normal" BORDER="thin">
+<style>
+    body {
+        font:12 pt Calibri;
+        color:black;
+        background-color:#F0F0F0
+    }
+    
+    h1 {
+        font:20pt Calibri;
+        font-weight:bold;
+        color:black;
+    }
+
+    h2 {
+        font:16pt Calibri;
+        font-weight: bold;
+        margin:0;
+        color:black;
+        background-color:#F0F0F0
+    }
+    
+    table, td {
+        font:12pt Calibri;
+        vertical-align: middle;
+        padding:0px;
+        padding-bottom: 5px;
+        border-collapse: collapse;
+    }
+
+    select {
+        font:12pt Calibri;
+        width: 100%;
+        color:black;
+        background-color:white
+    }
+
+    label {
+        font: 12pt Calibri;
+        vertical-align: middle;
+        color:black;
+        vertical-align: middle;
+    }
+</style>
+</head>
+
+<script language="vbscript" type="text/vbscript">
+
+' Set objects and declare global variables
+Set env = CreateObject("Microsoft.SMS.TSEnvironment")
+Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")
+
+Sub Window_onLoad
+    ' Declare varaibles
+    Const STR_TOSHIBA_X30 = "PORTEGE X30T-E"
+    Dim strProductName
+    Dim objWMIService, objItem, colItems
+
+    Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")
+    Set colItems = objWMIService.ExecQuery("Select * from Win32_ComputerSystem")
+
+    For Each objItem in colItems
+        strProductName = objItem.Manufacturer & " " & objItem.Model
+    Next
+
+    ' Debug Comment
+    ' MsgBox("Product Name = " + strProductName)
+
+    If InStr(strProductName, STR_TOSHIBA_X30) = 0 Then
+        ' Not Found: Not X30
+        window.resizeTo 480, 520 ' Resize the HTA window on first load
+        window.moveTo 160, 40 ' Move the window to the center
+    Else
+        ' Found: Is X30
+        window.resizeTo 680, 720 ' Resize the HTA window on first load
+        window.moveTo 620, 180 ' Move the window to the center
+    End If
+
+End Sub
+
+Sub ButtonFinishClick
+    ' ButtonFinishClick is executed by the "Finish" button.
+
+    For Each objButton in OSD_Image_Type
+        If objButton.Checked Then
+            strOSD_Image_Type = objButton.Value
+        End If
+    Next
+
+    strOSD_Format_Size = OSD_Format_Size.value
+    strOSD_User_School = OSD_User_School.value
+    strOSD_Adobe_Install = OSD_Adobe.value
+    strOSD_User_Type = OSD_User_Type.value
+    strOSD_Ninite_Install = OSD_Ninite.value
+    strOSD_Progress_Bar = OSD_Progress_Bar.value
+
+    ' Set value of variables that will be used by the task sequence, then close the window and allow the task sequence to continue.
+    
+'   Comment to check variables.
+    env("OSD_Image_Type") = strOSD_Image_Type
+    env("OSD_Format_Size") = strOSD_Format_Size
+    env("OSD_User_School") = strOSD_User_School
+    env("OSD_User_Type") = strOSD_User_Type
+    env("OSD_Adobe_Install") = strOSD_Adobe_Install
+    env("OSD_Ninite_Install") = strOSD_Ninite_Install
+    env("OSD_Progress_Bar") = strOSD_Progress_Bar
+
+'   Uncomment to check variables.
+    ' MsgBox("OSD_Image_Type = " + strOSD_Image_Type)
+    ' MsgBox("OSD_Format_Size = " + strOSD_Format_Size)
+    ' MsgBox("OSD_User_School = " + strOSD_User_School)
+    ' MsgBox("OSD_User_Type = " + strOSD_User_Type)
+    ' MsgBox("OSD_Adobe = " + strOSD_Adobe_Install)
+    ' MsgBox("OSD_Ninite_Install = " + strOSD_Ninite_Install)
+    ' MsgBox("OSD_Progress_Bar = " + strOSD_Progress_Bar)
+
+    window.Close
+End Sub
+
+</script>
+
+<body>
+<span id = "List"></span>
+<h1>Re-Image Options Menu</h1>
+
+<!-- IMAGE TYPE -->
+<h2>Image Type</h2>
+<table width="100%">
+    <tr>
+        <td width="25%">
+            <input type="radio" name="OSD_Image_Type" value="Refresh" id="Type_Refresh" checked="checked" style="height:25px; width:25px">
+            <label for="Type_Refresh"> Refresh </label>
+        </td>
+        <td width="75%"></td>
+    </tr>
+    <tr>
+        <td>
+            <input type="radio" name="OSD_Image_Type" value="Full" id="Type_Full" style="height:25px; width:25px">
+            <label for="Type_Full"> Full </label>
+        </td>
+        <td>
+            (Warning: This will wipe all data on all drives!)
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+            Select C:\ Drive Size: 
+            <select name="OSD_Format_Size">
+                <option value="0">Select if Applicable</option>
+                <option value="80">80GB</option>
+                <option value="100">100GB</option>
+                <option value="120">120GB</option>
+                <option value="140">140GB</option>
+                <option value="160">160GB</option>
+            </select>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<h2>Image Options</h2>
+<table width="100%">
+    <tr>
+        <td width="25%">
+            School
+        </td>
+        <td width="75%">
+            <select name="OSD_User_School">
+                <option value="Senior" selected>Senior School</option>
+                <option value="Junior">Junior School</option>
+                <option value="Both">Both</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            User Type
+        </td>
+        <td>
+            <select name="OSD_User_Type">
+                <option value="Student" selected>Student</option>
+                <option value="Staff">Staff</option>
+                <option value="Both">Both</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Adobe CC
+        </td>
+        <td>
+            <select name="OSD_Adobe">
+                <option value="Installer" selected>Installer</option>
+                <option value="Full">Full</option>
+                <option value="No">No</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Ninite
+        </td>
+        <td>
+            <select name="OSD_Ninite">
+                <option value="Full" selected>Full</option>
+                <option value="Core">Core</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Progress Bar
+        </td>
+        <td>
+            <select name="OSD_Progress_Bar">
+                <option value="Yes" selected>Yes</option>
+                <option value="No">No</option>
+            </select>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<button accesskey=N type=submit id=buttonFinish onclick=ButtonFinishClick>
+    <font size="4.5">Install</font>
+</button>
+
+</body>
+</html>

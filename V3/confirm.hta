@@ -1,0 +1,184 @@
+<html>
+    <!--
+        All Saints' College
+        Aaron Musgrave and Blaze Reynolds
+        5/07/2016
+    -->
+<head>
+<title>OSD Front End Script</title>
+<HTA:APPLICATION APPLICATIONNAME="OSD GATHER" SCROLL="yes" SINGLEINSTANCE="yes" WINDOWSTATE="normal" BORDER="thin">
+<style>
+	body {
+		font:14 pt Calibri;
+		color:black;
+		background-color:#F0F0F0
+	}
+	
+	h1 {
+		font:20 pt Calibri;
+		font-weight:bold;
+		color:black;
+	}
+	
+	table, th, td {
+		font:12 pt Calibri;
+		padding:0px;
+		border-collapse: collapse;
+	}
+	
+	th {
+		font-weight:bold;
+		text-align:center;
+	}
+	
+	table.border td{
+		border-bottom:1pt solid black;
+		border-right:1pt solid black;
+		width:70px;
+	}
+	
+	table.border th{
+		border-bottom:1pt solid black;
+		border-right:1pt solid black;
+		width:70px;
+	}
+	
+	select {
+		font:10 pt Calibri;
+		color:black;
+		background-color:white
+	}
+</style>
+</head>
+
+<script language="vbscript" type="text/vbscript">
+
+' Set objects and declare global variables
+Set env = CreateObject("Microsoft.SMS.TSEnvironment")
+Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")
+
+Sub Window_onLoad
+	window.resizeTo 400, 550 ' Resize the HTA window on first load
+	window.moveTo 200, 50 ' Move the window to the center
+End Sub
+
+Sub ButtonFinishClick
+	' ButtonFinishClick is executed by the "Finish" button.
+
+    For Each objButton in OSD_Image_Type
+            If objButton.Checked Then
+                strOSD_Image_Type = objButton.Value
+            End If
+        Next
+	
+	Select Case OSD_Format_Size.value
+        Case 0
+		    strOSD_Format_Size = "0"
+        Case 80
+            strOSD_Format_Size = "80"
+	    Case 100
+		    strOSD_Format_Size = "100"
+        Case 120
+            strOSD_Format_Size = "120"
+        Case 140
+            strOSD_Format_Size = "140"
+        Case 160
+            strOSD_Format_Size = "160"
+    End Select
+	
+	For Each objButton in OSD_User_Type
+            If objButton.Checked Then
+                strOSD_Image_Type = objButton.Value
+            End If
+        Next
+		
+	For Each objButton in OSD_User_School
+            If objButton.Checked Then
+                strOSD_Image_Type = objButton.Value
+            End If
+    Next	
+	
+	' Set value of variables that will be used by the task sequence, then close the window and allow the task sequence to continue.
+	
+	
+	env("OSD_Format_Size") = strOSD_Format_Size
+	env("OSD_Image_Type") = strOSD_Image_Type
+	env("OSD_User_Type") = strOSD_User_Type
+	env("OSD_User_School") = strOSD_User_Type
+	
+	
+	
+
+	window.Close
+End Sub
+
+</script>
+<body>
+<span id = "List"></span>
+<h1>Re-Image Options Menu</h1>
+<p><b>Image Type</b><br>
+<table>
+	<tr>
+		<td align="center"><input type="radio" name="OSD_Image_Type" value="Refresh"></th>
+		<td>Refresh</td>
+	</tr>
+	<tr>
+		<td align="center"><input type="radio" name="OSD_Image_Type" value="Full"></th>
+		<td>Full</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			Select C:\ Drive Size: 
+			<select name="OSD_Format_Size">
+				<option value="0"> Select if Applicable </option>
+				<option value="80"> 80GB </option>
+				<option value="100"> 100GB </option>
+				<option value="120"> 120GB </option>
+				<option value="140"> 140GB </option>
+				<option value="160"> 160GB </option>
+			</select>
+		</td>
+	</tr>
+</table>
+
+<p><b>User Type</b><br>
+<table>
+	<tr>
+		<td align="center"><input type="radio" name="OSD_User_Type" value="Student"></th>
+		<td>Student</td>
+	</tr>
+	<tr>
+		<td align="center"><input type="radio" name="OSD_User_Type" value="Staff"></th>
+		<td>Staff</td>
+	</tr>
+		<tr>
+		<td align="center"><input type="radio" name="OSD_User_Type" value="Both"></th>
+		<td>Both</td>
+	</tr>
+</table>
+
+<p><b>School</b><br>
+<table>
+	<tr>
+		<td align="center"><input type="radio" name="OSD_User_School" value="Junior"></th>
+		<td>Junior</td>
+	</tr>
+	<tr>
+		<td align="center"><input type="radio" name="OSD_User_School" value="Senior"</th>
+		<td>Senior</td>
+	</tr>
+		<tr>
+		<td align="center"><input type="radio" name="OSD_User_School" value="Both"</th>
+		<td>Both</td>
+	</tr>
+</table>
+
+<br>
+
+<button accesskey=N type=submit id=buttonFinish onclick=ButtonFinishClick >
+	<font size="4.5">Install</font>
+</button>
+
+</body>
+</html>
