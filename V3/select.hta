@@ -64,6 +64,7 @@ Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\roo
 Sub Window_onLoad
     ' Declare varaibles
     Const STR_TOSHIBA_X30 = "PORTEGE X30T-E"
+    Const STR_TOSHIBA_Z20_C = "PORTEGE Z20t-C"
     Dim strProductName
     Dim objWMIService, objItem, colItems
 
@@ -77,14 +78,21 @@ Sub Window_onLoad
     ' Debug Comment
     ' MsgBox("Product Name = " + strProductName)
 
-    If InStr(strProductName, STR_TOSHIBA_X30) = 0 Then
+    If InStr(strProductName, STR_TOSHIBA_X30) > 0 Then
+        ' Found: Is X30
+        ' 1920*1080 screen with 144 DPI
+        window.resizeTo 720, 720 ' Resize the HTA window on first load
+        window.moveTo 600, 180 ' Move the window to the center
+    Elseif InStr(strProductName, STR_TOSHIBA_Z20_C) > 0 Then
+        ' Found: Is Z20t-C
+        ' 1920*1080 screen with 96 DPI
+        window.resizeTo 460, 540
+        window.moveTo 730, 270
+    Else
         ' Not Found: Not X30
+        ' 800*600 screen with 96 DPI
         window.resizeTo 460, 540 ' Resize the HTA window on first load
         window.moveTo 170, 30 ' Move the window to the center
-    Else
-        ' Found: Is X30
-        window.resizeTo 720, 720 ' Resize the HTA window on first load
-        window.moveTo 580, 180 ' Move the window to the center
     End If
 
 End Sub
